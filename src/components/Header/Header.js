@@ -9,8 +9,36 @@ import SuperHeader from '../SuperHeader';
 import MobileMenu from '../MobileMenu';
 import VisuallyHidden from '../VisuallyHidden';
 
+const navLinkDetails = [{
+  title: 'Sale',
+  url: '/sale'
+}, {
+  title: 'New Releases',
+  url: '/new'
+}, {
+  title: 'Men',
+  url: '/men'
+}, {
+  title: 'Women',
+  url: '/women'
+}, {
+  title: 'Kids',
+  url: '/kids'
+}, {
+  title: 'Collections',
+  url: '/collections'
+}];
+
 const Header = () => {
   const [showMobileMenu, setShowMobileMenu] = React.useState(false);
+
+  const navLinks = navLinkDetails.map((link) => (
+    <NavLinkContainer href={link.url}>
+      <NavLink>{link.title}</NavLink>
+      <BoldNavLink>{link.title}</BoldNavLink>
+    </NavLinkContainer>
+  ))
+
 
   return (
     <header>
@@ -20,12 +48,7 @@ const Header = () => {
           <Logo />
         </LogoWrapper>
         <DesktopNav>
-          <NavLink href="/sale">Sale</NavLink>
-          <NavLink href="/new">New&nbsp;Releases</NavLink>
-          <NavLink href="/men">Men</NavLink>
-          <NavLink href="/women">Women</NavLink>
-          <NavLink href="/kids">Kids</NavLink>
-          <NavLink href="/collections">Collections</NavLink>
+          {navLinks}
         </DesktopNav>
         <MobileActions>
           <ShoppingBagButton>
@@ -75,6 +98,8 @@ const DesktopNav = styled.nav`
   display: flex;
   gap: clamp(1rem, 9.2vw - 4.5rem, 3.5rem);
   margin: 0px 48px;
+  position: relative;
+  overflow: hidden;
 
   @media ${QUERIES.tabletAndSmaller} {
     display: none;
@@ -114,12 +139,44 @@ const Filler = styled.div`
   }
 `;
 
-const NavLink = styled.a`
+const NavLink = styled.span`
   font-size: 1.125rem;
   text-transform: uppercase;
+  font-weight: ${WEIGHTS.medium};
+  transition: transform 200ms ease-in-out;
+`;
+  
+const BoldNavLink = styled(NavLink)`
+  font-weight: ${WEIGHTS.bold};
+  position: absolute;
+  transform: translateY(100%);
+  transition: transform 200ms ease-in-out;
+`;
+  
+const NavLinkContainer = styled.a`
+  display: flex;
   text-decoration: none;
   color: var(--color-gray-900);
-  font-weight: ${WEIGHTS.medium};
+  
+
+  @media (prefers-reduced-motion: no-preference) {
+    &:hover ${NavLink},
+    &:focus ${NavLink} {
+      transform: translateY(-100%);
+    }
+    
+    &:hover ${BoldNavLink},
+    &:focus ${BoldNavLink} {
+      transform: translateY(0%);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    &:hover ${NavLink},
+    &:focus ${NavLink} {
+      font-weight: ${WEIGHTS.bold};
+    }
+  }
 
   &:first-of-type {
     color: var(--color-secondary);
