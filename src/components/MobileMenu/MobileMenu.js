@@ -19,12 +19,12 @@ const MobileMenu = ({ isOpen, onDismiss }) => {
         </CloseButton>
         <Filler />
         <Nav>
-          <NavLink href="/sale">Sale</NavLink>
-          <NavLink href="/new">New&nbsp;Releases</NavLink>
-          <NavLink href="/men">Men</NavLink>
-          <NavLink href="/women">Women</NavLink>
-          <NavLink href="/kids">Kids</NavLink>
-          <NavLink href="/collections">Collections</NavLink>
+          <NavLink index={1} href="/sale">Sale</NavLink>
+          <NavLink index={2} href="/new">New&nbsp;Releases</NavLink>
+          <NavLink index={3} href="/men">Men</NavLink>
+          <NavLink index={4} href="/women">Women</NavLink>
+          <NavLink index={5} href="/kids">Kids</NavLink>
+          <NavLink index={6} href="/collections">Collections</NavLink>
         </Nav>
         <Footer>
           <SubLink href="/terms">Terms and Conditions</SubLink>
@@ -42,9 +42,22 @@ const Overlay = styled(DialogOverlay)`
   left: 0;
   right: 0;
   bottom: 0;
-  background: var(--color-backdrop);
   display: flex;
   justify-content: flex-end;
+  background: var(--color-backdrop);
+  
+  @keyframes backdrop {
+    from {
+      opacity: 0.5;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  &[data-reach-dialog-overlay] {
+    animation: backdrop 300ms ease-in-out;
+  }
 `;
 
 const Content = styled(DialogContent)`
@@ -54,6 +67,19 @@ const Content = styled(DialogContent)`
   padding: 24px 32px;
   display: flex;
   flex-direction: column;
+
+  @keyframes slideIn {
+    from {
+      transform: translateX(100%);
+    }
+    to {
+      transform: translateX(0%);
+    }
+  }
+
+  &[data-reach-dialog-content] {
+    animation: slideIn 300ms ease-in-out;
+  }
 `;
 
 const CloseButton = styled(UnstyledButton)`
@@ -79,6 +105,17 @@ const NavLink = styled.a`
   &:first-of-type {
     color: var(--color-secondary);
   }
+
+  @keyframes navSlideIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  animation: navSlideIn ${(props) => 600 + (200 * props.index)}ms ease-in-out;
 `;
 
 const Filler = styled.div`
@@ -90,6 +127,20 @@ const Footer = styled.footer`
   flex-direction: column;
   gap: 14px;
   justify-content: flex-end;
+
+
+  @keyframes opacity {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  & > * {
+    animation: opacity 600ms ease-in-out;
+  }
 `;
 
 const SubLink = styled.a`
